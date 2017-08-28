@@ -1,0 +1,94 @@
+ 
+   
+
+<ml-grid>
+ <ml-grid-cell width="5" class="bg-grey">&nbsp;</ml-grid-cell>
+ <ml-grid-cell *ngIf="searchResults.length !== 0 || searchBusResults.length !== 0"  width="2">
+   <ml-button-submit *ngIf="!working" (click)="makeProposalDlg.show();setDefaultVisibility()" [disabled]="searchResults.length === 0 && searchBusResults.length === 0" text="Create a Proposal" aspect="raised" ripple>
+   </ml-button-submit>
+ </ml-grid-cell>
+ <ml-grid-cell width="5" class="bg-grey">&nbsp;</ml-grid-cell>
+  <ml-grid-cell width="6" class="bg-grey">
+    <form [formGroup]="searchForm">
+      <ml-chip-button *ngIf="searchResults.length === 0 && !working" id="partner-search" (click)="doSearch()">
+        <ml-icon class="ico-aligned">search</ml-icon>Search by Partner Skill/Service&nbsp;</ml-chip-button>
+    </form>
+  </ml-grid-cell>
+
+  <ml-grid-cell width="6" class="bg-grey">
+        <form [formGroup]="searchBusConcepetsForm">
+          <ml-chip-button  *ngIf="searchBusResults.length === 0 && !working" id="bus-search" (click)="doBusSearch()">
+              <ml-icon class="ico-aligned">search</ml-icon>
+              Search by Business Concepts&nbsp;</ml-chip-button>
+        </form>
+    </ml-grid-cell>
+</ml-grid>
+
+<ml-grid>
+  <ml-grid-cell width="6" class="bg-grey">
+    
+    <table ml-table shadow="3" *ngIf="searchResults.length > 0">
+      <caption>Matched by Skills/Services</caption>
+      <tr align="left">
+        <th text-cell>Skill/Serice</th>
+        <th text-cell>User Name</th>
+        <th text-cell>Location</th>
+      </tr>
+
+      <tr *ngFor="let kw of searchResults">
+        <td text-cell class="cell_wrap">{{kw.keyword}} </td>
+        <td text-cell class="cell_wrap">{{kw.name}}</td>
+        <td text-cell class="cell_wrap">{{kw.location}}</td>
+      </tr>
+    </table>
+  </ml-grid-cell>
+
+ <ml-grid-cell width="6" class="bg-grey">
+   
+
+    <table ml-table shadow="3" *ngIf="searchBusResults.length > 0">
+      <caption>Matched by Business Concepts</caption>
+      <tr>
+        <th text-cell>Skill/Serice</th>
+        <th text-cell>User Name</th>
+        <th text-cell>Location</th>
+      </tr>
+
+      <tr *ngFor="let kw of searchBusResults">
+        <td text-cell class="cell_wrap">{{kw.keyword}} </td>
+        <td text-cell class="cell_wrap">{{kw.name}}</td>
+        <td text-cell class="cell_wrap">{{kw.location}}</td>
+      </tr>
+    </table>
+ </ml-grid-cell>
+</ml-grid>
+
+<mdl-dialog  #makeProposalDlg class="mdl-dialog">
+
+  <ml-dialog-content>
+ 
+    <form [formGroup]="proposalForm" autocomplete="off">
+       <ml-textfield [formControl]="proposalTitleTF">
+        <ml-textfield-label>Title</ml-textfield-label>
+        <ml-error [validateControl]="proposalTitleTF" validator="required">Required</ml-error>
+        <ml-error [validateControl]="proposalTitleTF" validator="minLength">Min length 10</ml-error>
+        <ml-error [validateControl]="proposalTitleTF" validator="maxLength">Max length 128</ml-error>
+      </ml-textfield>
+      <textarea [formControl]="proposalMessageTA" rows="3" maxrows="10" id="styled">
+        <ml-textfield-label>Proposal Message</ml-textfield-label>
+        <ml-error [validateControl]="proposalMessageTA" validator="required">Required</ml-error>
+        <ml-error [validateControl]="proposalMessageTA" validator="minLength">Min length 10</ml-error>
+      </textarea>
+    </form>
+  </ml-dialog-content>
+
+  <ml-dialog-actions>
+    <ml-button-submit large-screen-only [disabled]="!proposalForm.valid" aspect="raised, colored, primary" (click)="addProposal()" ripple text="Publish Proposal"></ml-button-submit>
+    <ml-button-submit small-screen-only class="shrink" [disabled]="!proposalForm.valid" aspect="raised" (click)="addProposal()" ripple text="Publish"></ml-button-submit>
+    <ml-switch id="visibility_id" [formControl]="visibility" ripple>{{visibility_label}}</ml-switch>
+    
+    <ml-button large-screen-only aspect="raised, colored, primary" (click)="makeProposalDlg.close()" ripple>Close</ml-button>
+    <ml-button small-screen-only class="button_right" variant="icon" (click)="makeProposalDlg.close()"><ml-icon>clear</ml-icon></ml-button>
+  </ml-dialog-actions>
+
+</mdl-dialog>

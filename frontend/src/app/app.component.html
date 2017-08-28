@@ -1,0 +1,68 @@
+
+<ml-layout drawer="fixed">
+  <ml-header scrollable>
+    <ml-header-row>
+      <ml-title>Relevant Cooperation</ml-title>
+      <ml-nav large-screen-only style="justify-content: flex-end;">
+        <div nav-item>&nbsp;</div>
+        <div nav-item>&nbsp;</div>
+        <div nav-item *ngIf="isLoggedIn()">Welcome:&nbsp;{{userProfile.name}}</div>
+      </ml-nav>
+     
+    </ml-header-row>
+     
+  </ml-header>
+  <ml-drawer>
+    <ml-header-row>
+      <ml-title>Menu</ml-title>
+      <ml-spacer></ml-spacer>
+    </ml-header-row>
+    <ml-nav>
+      <a nav-item [routerLink]="['']">
+        <ml-icon>home</ml-icon>
+        Home</a>
+      
+      <a nav-item *ngIf="isLoggedIn()" [routerLink]="['modprofile']">
+        <ml-icon>perm_identity</ml-icon>
+        Profile</a>
+
+      <a nav-item *ngIf="isLoggedIn()" [routerLink]="['search']">   
+         <ml-icon>link</ml-icon>
+        Find Partners</a>
+      
+       <a nav-item *ngIf="isLoggedIn()" [routerLink]="['proposals']">
+          <ml-icon>mail</ml-icon>
+          My Proprosals
+       </a>
+
+        <a nav-item *ngIf="isLoggedIn()" [routerLink]="['public-proposals']">
+          <ml-icon>folder_open</ml-icon>
+          Public Proprosals
+       </a>
+     
+     <a nav-item   [routerLink]="['contact']">
+        <ml-icon>info_outline</ml-icon>
+          Contact Us
+      </a>
+      <a nav-item *ngIf="!isLoggedIn()" [routerLink]="['login']">
+         <ml-icon>person_pin</ml-icon>
+         Login
+      </a>
+
+      <a nav-item *ngIf="isLoggedIn()" [routerLink]="['logout']">
+        <ml-icon>cancel</ml-icon>
+        Log Out</a>  
+
+    
+    </ml-nav>
+  </ml-drawer>
+
+  <ml-content-loader spinner (onLoading)="onLoading($event)">
+   
+  </ml-content-loader>
+  <ml-content [hidden]="isLoading" style="padding-left: 12px">  
+     <router-outlet></router-outlet>
+     <dialog-outlet></dialog-outlet>
+  </ml-content>
+
+</ml-layout>
